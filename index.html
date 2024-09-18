@@ -18,60 +18,17 @@
         margin: 0;
         padding: 0;
       }
-      #message {
-        font-size: 1.5rem;
-        color: red;
-        text-align: center;
-        margin-top: 50px;
-        display: none;
-      }
     </style>
   </head>
 
   <body style="background-color: #eee">
-    <!-- Pesan jika absensi tidak dapat diakses -->
-    <div id="message">Waktu absensi telah berakhir. Form tidak bisa diakses.</div>
-
-    <!-- Container untuk iframe responsif -->
+    <!-- Container untuk membuat iframe responsif -->
     <iframe
       id="gform"
       src="https://docs.google.com/forms/d/e/1FAIpQLSfUJApSm-11jWYD7rSO9IVFs_uHERYjNa224A7K04GpfvuO2g/viewform?embedded=true"
-    >Loading…</iframe>
-
+      >Loading…</iframe
+    >
     <script type="text/javascript">
-      // Fungsi untuk mengecek waktu absensi
-      function checkAbsensi() {
-        var now = new Date();
-        var currentTime = now.getHours() * 60 + now.getMinutes(); // Hitung waktu dalam menit
-
-        // Shift pagi: 07:30 (450 menit) hingga 08:30 (510 menit)
-        var shiftPagiStart = 450;
-        var shiftPagiEnd = 510;
-
-        // Shift siang: 13:00 (780 menit) hingga 14:00 (840 menit)
-        var shiftSiangStart = 780;
-        var shiftSiangEnd = 840;
-
-        if (
-          (currentTime >= shiftPagiStart && currentTime <= shiftPagiEnd) ||
-          (currentTime >= shiftSiangStart && currentTime <= shiftSiangEnd)
-        ) {
-          // Tampilkan form jika dalam waktu absensi
-          document.getElementById("gform").style.display = "block";
-          document.getElementById("message").style.display = "none";
-        } else {
-          // Tampilkan pesan jika waktu absensi sudah lewat
-          document.getElementById("gform").style.display = "none";
-          document.getElementById("message").style.display = "block";
-        }
-      }
-
-      // Jalankan pengecekan saat halaman dimuat
-      checkAbsensi();
-
-      // Periksa kembali setiap menit
-      setInterval(checkAbsensi, 60000);
-
       var loadCount = 0;
       // Sesuaikan id gform dengan id iframe di atas
       document.getElementById("gform").onload = function () {
@@ -80,7 +37,7 @@
         if (loadCount > 1) {
           // Ganti URL di bawah dengan URL WebApp Anda
           window.location.href =
-            "https://script.google.com/macros/s/AKfycbz5_2e9QJki_oVq7YXInyOne25qSZNBQ36gOCjzKnNgXapHZTGnFSk4Lw9iT3TbyPnb/exec";
+            "https://script.google.com/macros/s/AKfycbyFVrQrsw_V-PWISV8cY_mG43Rt_jN6Ckj9_iuQlH6V8N9ZLPwWPKObFmVbxBiPHD8R/exec";
         }
       };
     </script>
