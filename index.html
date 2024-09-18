@@ -5,20 +5,52 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Absen</title>
+    <style>
+      /* Membuat container iframe agar responsif */
+      .iframe-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* Rasio aspek 16:9 */
+        height: 0;
+        overflow: hidden;
+      }
+      .iframe-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    </style>
   </head>
 
   <body>
-    <!-- ganti src url dengan url form anda -->
-    <iframe id="gform" src="https://docs.google.com/forms/d/e/1FAIpQLSfUJApSm-11jWYD7rSO9IVFs_uHERYjNa224A7K04GpfvuO2g/viewform?embedded=true" width="640" height="1261" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <!-- Container untuk membuat iframe responsif -->
+    <div class="iframe-container">
+      <!-- Ganti src URL dengan URL form Anda -->
+      <iframe
+        id="gform"
+        src="https://docs.google.com/forms/d/e/1FAIpQLSfUJApSm-11jWYD7rSO9IVFs_uHERYjNa224A7K04GpfvuO2g/viewform?embedded=true"
+        frameborder="0"
+        marginheight="0"
+        marginwidth="0"
+        allowfullscreen
+      >
+        Loading…
+      </iframe>
+    </div>
 
     <script type="text/javascript">
-      var load = 0;
-      // sesuaikan id gform dengan id yang ada pada tag iframe di atas
+      var loadCount = 0;
+      // Sesuaikan id gform dengan id iframe di atas
       document.getElementById("gform").onload = function () {
-        load++;
-        if (load > 1) {
-          // ganti url dibawah dengan url webapp anda
-          document.location = "https://script.google.com/macros/s/AKfycbyFVrQrsw_V-PWISV8cY_mG43Rt_jN6Ckj9_iuQlH6V8N9ZLPwWPKObFmVbxBiPHD8R/exec";
+        loadCount++;
+        // Mengecek apakah iframe sudah dimuat lebih dari sekali
+        if (loadCount > 1) {
+          // Ganti URL di bawah dengan URL WebApp Anda
+          window.location.href =
+            "https://script.google.com/macros/s/AKfycbyFVrQrsw_V-PWISV8cY_mG43Rt_jN6Ckj9_iuQlH6V8N9ZLPwWPKObFmVbxBiPHD8R/exec";
         }
       };
     </script>
