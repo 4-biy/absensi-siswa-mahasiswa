@@ -23,15 +23,12 @@
 
   <body style="background-color: #eee">
     <!-- Container untuk membuat iframe responsif -->
-    <iframe
-      id="gform"
-      src="https://docs.google.com/forms/d/e/1FAIpQLSfUJApSm-11jWYD7rSO9IVFs_uHERYjNa224A7K04GpfvuO2g/viewform?embedded=true"
-      >Loading…</iframe
+    <iframe id="gform" src="https://docs.google.com/forms/d/e/1FAIpQLSfUJApSm-11jWYD7rSO9IVFs_uHERYjNa224A7K04GpfvuO2g/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0" >Loading…</iframe
     >
     <script type="text/javascript">
       var loadCount = 0;
       // Sesuaikan id gform dengan id iframe di atas
-      document.getElementById("gform").onload = function () {
+      document.getElementById('gform').onload = function () {
         loadCount++;
         // Mengecek apakah iframe sudah dimuat lebih dari sekali
         if (loadCount > 1) {
@@ -40,5 +37,5 @@
         }
       };
     </script>
-  </body>
+
 </html>
