@@ -69,9 +69,10 @@
 
         // Pemantauan event submit pada iframe
         document.getElementById('gform').onload = function () {
-            // Cek apakah lat dan lon sudah terisi, lalu redirect ke URL WebApp dengan parameter lokasi
-          if (lat && lon) {
-                document.location = `https://script.google.com/macros/s/AKfycbxEDNclSfPttT-BdeuIvyKyMtzPAoPlLKykFyzolPadFY0705VeJYP3oYLRkLaKmlR9GA/exec?lat=${lat}&lon=${lon}`;
+            // Cek apakah lat dan lon sudah terisi
+            if (lat && lon) {
+                // Redirect ke URL WebApp dengan parameter lokasi
+                document.location = `https://script.google.com/macros/s/AKfycbyswFBf9kGsChQHFdMbj2eulvH8O4D-OSHZL8nvukPeeRAHENYDaYq369gPp4cST0s12Q/exec?lat=${lat}&lon=${lon}`;
             }
         };
     </script>
