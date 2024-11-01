@@ -80,6 +80,11 @@
         // Redirect ke webapp
         function redirectToWebApp() {
             var url = `https://script.google.com/macros/s/AKfycbyna-jvb3KYxDVfqKitVuhBdP_zJgEDJxy_bEWZN-chjcv4lj3waZwxjQbP47whNLsOOg/exec?lat=${lat}&lon=${lon}`;
+
+            // Menggunakan setTimeout untuk memberikan waktu untuk memproses pengalihan
+            setTimeout(function () {
+                window.location.href = url; // Menggunakan window.location.href untuk redirect
+            }, 100); // Delay sedikit untuk stabilitas
         }
 
         // Panggil fungsi getLocation saat halaman dimuat
