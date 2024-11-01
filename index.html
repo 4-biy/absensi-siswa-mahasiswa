@@ -36,9 +36,8 @@
 </head>
 
 <body style="background-color: #eee">
-    <!-- Container untuk membuat iframe responsif -->
     <iframe id="gform"
-        src="https://docs.google.com/forms/d/e/1FAIpQLSeI9BB5WHCtQS-_4CsYjqjojoe8sBxQ1z_Dg4sLCCmWnNjjBQ/viewform?embedded=true"
+        src="https://docs.google.com/forms/d/e/1FAIpQLSeI9BB5WHCtQS-_4CsYjqjojoe8sBxQ1z_Dg4sLCCmWnNjjBQ/viewform?embedded=true&randomParam=<?= Math.random() ?>"
         style="width: 100%; border: none;"></iframe>
 
     <script type="text/javascript">
@@ -57,21 +56,34 @@
         function success(position) {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
-            // Redirect ke URL WebApp dengan parameter lokasi
-            redirectToWebApp();
+
+            // Hanya redirect jika lat dan lon valid
+            if (isValidLocation(lat, lon)) {
+                redirectToWebApp();
+            } else {
+                alert("Lokasi tidak valid. Tidak dapat melakukan absensi.");
+            }
         }
 
         // Fungsi ini akan dipanggil jika ada kesalahan dalam mengambil koordinat
-        function error() {
+        function error(err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
             alert("Gagal mendapatkan lokasi. Pastikan izin lokasi sudah diberikan.");
+        }
+
+        // Memeriksa validitas lokasi
+        function isValidLocation(lat, lon) {
+            return (lat !== undefined && lon !== undefined);
         }
 
         // Redirect ke webapp
         function redirectToWebApp() {
-            if (lat && lon) {
-                // Ganti URL dengan URL WebApp Anda
-                document.location = `https://script.google.com/macros/s/AKfycbzZRLg18sINvMmplGr5U59H_XohFGKanTD_-oBC6r3Xv2Y8-ht8lYJmbDZy5qXnM6qxEQ/exec?lat=${lat}&lon=${lon}`;
-            }
+            var url = `https://script.google.com/macros/s/AKfycbwSnv-G_R8Dd60zAMKoD_Mg5kq3Ecpfh6PjbO7P2ufKTzKFkYEZ4Z5RJt9It2bKmQxM_A/exec?lat=${lat}&lon=${lon}`;
+
+            // Menggunakan setTimeout untuk memberikan waktu untuk memproses pengalihan
+            setTimeout(function () {
+                window.location.href = url; // Menggunakan window.location.href untuk redirect
+            }, 100); // Delay sedikit untuk stabilitas
         }
 
         // Panggil fungsi getLocation saat halaman dimuat
