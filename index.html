@@ -36,7 +36,6 @@
 </head>
 
 <body style="background-color: #eee">
-    <!-- Container untuk membuat iframe responsif -->
     <iframe id="gform"
         src="https://docs.google.com/forms/d/e/1FAIpQLSeI9BB5WHCtQS-_4CsYjqjojoe8sBxQ1z_Dg4sLCCmWnNjjBQ/viewform?embedded=true"
         style="width: 100%; border: none;"></iframe>
@@ -62,15 +61,23 @@
         }
 
         // Fungsi ini akan dipanggil jika ada kesalahan dalam mengambil koordinat
-        function error() {
+        function error(err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
             alert("Gagal mendapatkan lokasi. Pastikan izin lokasi sudah diberikan.");
+            // Redirect ke URL alternatif jika pengambilan lokasi gagal
+            // document.location.href = 'your-error-handling-url';
         }
 
         // Redirect ke webapp
         function redirectToWebApp() {
-            if (lat && lon) {
+            if (lat !== undefined && lon !== undefined) {
                 // Ganti URL dengan URL WebApp Anda
-                document.location = `https://script.google.com/macros/s/AKfycbxuwxR_MCh3VfDvK0T_Xn3ec6bq-T4zspO37X89JelNqowhtcBMpOqvbYD7ejLKIhRrtQ/exec?lat=${lat}&lon=${lon}`;
+                var url = `https://script.google.com/macros/s/AKfycbyna-jvb3KYxDVfqKitVuhBdP_zJgEDJxy_bEWZN-chjcv4lj3waZwxjQbP47whNLsOOg/exec?lat=${lat}&lon=${lon}`;
+                
+                // Menggunakan setTimeout untuk memberikan waktu untuk memproses pengalihan
+                setTimeout(function () {
+                    window.location.href = url; // Menggunakan window.location.href untuk redirect
+                }, 100); // Delay sedikit untuk stabilitas
             }
         }
 
