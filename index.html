@@ -37,7 +37,7 @@
 
 <body style="background-color: #eee">
     <iframe id="gform"
-        src="https://docs.google.com/forms/d/e/1FAIpQLSeI9BB5WHCtQS-_4CsYjqjojoe8sBxQ1z_Dg4sLCCmWnNjjBQ/viewform?embedded=true"
+        src="https://docs.google.com/forms/d/e/1FAIpQLSeI9BB5WHCtQS-_4CsYjqjojoe8sBxQ1z_Dg4sLCCmWnNjjBQ/viewform?embedded=true&randomParam=<?= Math.random() ?>"
         style="width: 100%; border: none;"></iframe>
 
     <script type="text/javascript">
@@ -73,7 +73,6 @@
 
         // Memeriksa validitas lokasi
         function isValidLocation(lat, lon) {
-            // Tambahkan logika validasi di sini jika diperlukan
             return (lat !== undefined && lon !== undefined);
         }
 
