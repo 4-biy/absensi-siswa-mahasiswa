@@ -44,7 +44,7 @@
     <script type="text/javascript">
         var lat, lon;
 
-        // Fungsi untuk mendapatkan lokasi saat halaman pertama kali dimuat
+        // Fungsi untuk mendapatkan lokasi
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(success, error);
@@ -57,6 +57,8 @@
         function success(position) {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
+            // Redirect ke URL WebApp dengan parameter lokasi
+            redirectToWebApp();
         }
 
         // Fungsi ini akan dipanggil jika ada kesalahan dalam mengambil koordinat
@@ -64,16 +66,20 @@
             alert("Gagal mendapatkan lokasi. Pastikan izin lokasi sudah diberikan.");
         }
 
-        // Panggil fungsi getLocation saat halaman dimuat
-        window.onload = getLocation;
-
-        // Pemantauan event submit pada iframe
-        document.getElementById('gform').onload = function () {
-            // Cek apakah lat dan lon sudah terisi
+        // Redirect ke webapp
+        function redirectToWebApp() {
             if (lat && lon) {
-                // Redirect ke URL WebApp dengan parameter lokasi
-                document.location = `https://script.google.com/macros/s/AKfycbzEje_IHq5XgBlJETXZZc2flqoqxYrjE_q2rUftHTIALL_B3roNsT2HpwnjDu5aE5M4ew/exec?lat=${lat}&lon=${lon}`;
+                // Ganti URL dengan URL WebApp Anda
+                document.location = `https://script.google.com/macros/s/AKfycbyv4R5NmDZ2OEAjGenwfDcdObNDHKps9EGtOiQujwAMQgwPIhZlxIKPO8rhZo0djcOXDQ/exec?lat=${lat}&lon=${lon}`;
             }
+        }
+
+        // Panggil fungsi getLocation saat halaman dimuat
+        window.onload = function () {
+            // Tunggu hingga iframe dimuat sepenuhnya
+            document.getElementById('gform').onload = function () {
+                getLocation(); // Dapatkan lokasi saat iframe dimuat
+            };
         };
     </script>
 </body>
