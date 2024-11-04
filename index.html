@@ -25,7 +25,7 @@
             if (lastAccess !== today) {
                 // Jika belum absen hari ini, redirect ke file `iframe.html`
                 localStorage.setItem("lastAccess", today);
-                window.location.href = "https://4-biy.github.io/iframe/"; // Ganti dengan nama file yang ingin dituju
+                window.location.href = "https://4-biy.github.io/iframe/iframe.html"; // Ganti dengan nama file yang ingin dituju
             } else {
                 // Jika sudah absen hari ini, tampilkan pesan dan arahkan ke halaman lain saat klik "Ok"
                 Swal.fire({
