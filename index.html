@@ -6,92 +6,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ABSENSI MAHASISWA & SISWA</title>
-    <style>
-        #gform {
-            margin: auto;
-            border: blue solid 1px;
-            width: 100%;
-            height: 98vh;
-            overflow: auto;
-        }
-
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-
-        .header {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .header img {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </head>
 
 <body style="background-color: #eee">
-    <iframe id="gform"
-        src="https://docs.google.com/forms/d/e/1FAIpQLSeI9BB5WHCtQS-_4CsYjqjojoe8sBxQ1z_Dg4sLCCmWnNjjBQ/viewform?embedded=true&randomParam=<?= Math.random() ?>"
-        style="width: 100%; border: none;"></iframe>
-
     <script type="text/javascript">
-        var lat, lon;
-
-        // Fungsi untuk mendapatkan lokasi
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(success, error);
-            } else {
-                alert("Geolocation tidak didukung oleh browser ini.");
-            }
+        // Fungsi untuk mendapatkan tanggal hari ini dalam format yyyy-mm-dd
+        function getTodayDate() {
+            return new Date().toISOString().slice(0, 10);
         }
 
-        // Fungsi ini akan dipanggil jika koordinat berhasil diperoleh
-        function success(position) {
-            lat = position.coords.latitude;
-            lon = position.coords.longitude;
-
-            // Hanya redirect jika lat dan lon valid
-            if (isValidLocation(lat, lon)) {
-                redirectToWebApp();
-            } else {
-                alert("Lokasi tidak valid. Tidak dapat melakukan absensi.");
-            }
-        }
-
-        // Fungsi ini akan dipanggil jika ada kesalahan dalam mengambil koordinat
-        function error(err) {
-            console.warn(`ERROR(${err.code}): ${err.message}`);
-            alert("Gagal mendapatkan lokasi. Pastikan izin lokasi sudah diberikan.");
-        }
-
-        // Memeriksa validitas lokasi
-        function isValidLocation(lat, lon) {
-            return (lat !== undefined && lon !== undefined);
-        }
-
-        // Redirect ke webapp
-        function redirectToWebApp() {
-            var url = `https://script.google.com/macros/s/AKfycbwSnv-G_R8Dd60zAMKoD_Mg5kq3Ecpfh6PjbO7P2ufKTzKFkYEZ4Z5RJt9It2bKmQxM_A/exec?lat=${lat}&lon=${lon}`;
-
-            // Menggunakan setTimeout untuk memberikan waktu untuk memproses pengalihan
-            setTimeout(function () {
-                window.location.href = url; // Menggunakan window.location.href untuk redirect
-            }, 100); // Delay sedikit untuk stabilitas
-        }
-
-        // Panggil fungsi getLocation saat halaman dimuat
+        // Panggil fungsi saat halaman dimuat
         window.onload = function () {
-            // Tunggu hingga iframe dimuat sepenuhnya
-            document.getElementById('gform').onload = function () {
-                getLocation(); // Dapatkan lokasi saat iframe dimuat
-            };
+            const today = getTodayDate();
+            const lastAccess = localStorage.getItem("lastAccess");
+
+            if (lastAccess !== today) {
+                // Jika belum absen hari ini, redirect ke file `iframe.html`
+                localStorage.setItem("lastAccess", today);
+                window.location.href = "iframe.html"; // Ganti dengan nama file yang ingin dituju
+            } else {
+                // Jika sudah absen hari ini, tampilkan pesan dan arahkan ke halaman lain saat klik "Ok"
+                Swal.fire({
+                    title: 'Informasi',
+                    text: 'Anda sudah melakukan absensi hari ini. Silahkan datang besok.',
+                    icon: 'info',
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "https://4-biy.github.io/homepage/home.html"; // Ganti dengan tautan yang diinginkan
+                    }
+                });
+            }
         };
     </script>
 </body>
