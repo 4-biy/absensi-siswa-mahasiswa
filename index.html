@@ -1,45 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
     <title>ABSENSI MAHASISWA & SISWA</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            #m {
+                position: relative;
+                background: transparent;
+            }
+            #m::before {
+                background-image: url('assets/img/dlhk.jpg');
+                filter: brightness(40%);
+                content: "";
+                position: fixed;
+                background-size: cover;
+                left: 0;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                z-index: -1;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body style="background-color: #eee">
-    <script type="text/javascript">
-        // Fungsi untuk mendapatkan tanggal hari ini dalam format yyyy-mm-dd
-        function getTodayDate() {
-            return new Date().toISOString().slice(0, 10);
+<body class="bg-green-50">
+    <div class="flex flex-col items-center min-h-screen mx-auto" id="m">
+
+        <!-- Main Content Section -->
+        <div class="max-w-screen-md min-h-screen w-full p-6 flex flex-col items-center justify-center">
+            <img class="h-16 w-100 md:h-20 md:w-100" src="assets/img/logoDLHKV2.png" alt="Logo dlhk" />
+            <div class="flex space-x-4 mt-3">
+                <p class="text-xs font-bold text-center text-white">
+                    <a href="https://dlhk.sulselprov.go.id/"><i class="fa-solid fa-globe"></i> dlhk.sulselprov.go.id</a> 
+                </p>
+                <p class=" text-xs font-bold text-center text-white">
+                    <a href="https://www.google.com/maps/place/DLHK+SULSEL+%2F+Dinas+Lingkungan+Hidup+dan+Kehutanan+Provinsi+Sulawesi+Selatan,+Jl.+Baji+Minasa+No.14,+Tamarunang,+Kec.+Mariso,+Kota+Makassar,+Sulawesi+Selatan+90126/@-5.1651257,119.4093501,20z/data=!4m12!1m5!3m4!2zNcKwMDknNTUuMiJTIDExOcKwMjQnMzMuOCJF!8m2!3d-5.1653182!4d119.4093908!3m5!1s0x2dbefd2d7b352699:0xcaee2b4f7a1ec1bd!8m2!3d-5.1651257!4d119.4093501!16s%2Fg%2F11c6r8k2d1"><i class="fa-solid fa-location-dot"></i> Jl.Baji Minasa No.14,Tamarunang,Kec.Mariso</a> 
+                </p>
+            </div>
+
+            <h3 class="text-2xl md:text-4xl font-bold text-center text-white mt-3 mb-6">Sistem Absensi dan Sertifikasi Online untuk Mahasiswa & Siswa Praktis dan Terjangkau!</h3>
+        <div class="flex flex-wrap gap-4">
+            <!-- Absensi Button -->
+            <button onclick="checkLocationAndRedirect()"
+                class="rounded-full w-40 h-10 flex justify-center items-center bg-green-600 text-white ">
+                Absensi
+            </button>
+        
+            <!-- Sertifikat Button -->
+            <button onclick="showSertifikatMenu()"
+                class="rounded-full w-40 h-10 flex justify-center items-center bg-green-600 text-white ">
+                Sertifikat
+            </button>
+        </div>
+
+        </div>
+    </div>
+
+    <!-- Geolocation and Redirect Script -->
+    <script>
+        // Koordinat area poligon
+        const polygonCoords = [
+            { lat: -5.108244, lng: 119.432153 },
+            { lat: -5.108519, lng: 119.432225 },
+            { lat: -5.108300, lng: 119.432578 },
+            { lat: -5.108014, lng: 119.432403 }
+        ];
+
+        // Fungsi untuk memeriksa apakah titik berada di dalam poligon
+        function isPointInPolygon(lat, lng, polygon) {
+            let inside = false;
+            for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                const xi = polygon[i].lat, yi = polygon[i].lng;
+                const xj = polygon[j].lat, yj = polygon[j].lng;
+
+                const intersect = ((yi > lng) != (yj > lng)) &&
+                    (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
         }
 
-        // Panggil fungsi saat halaman dimuat
-        window.onload = function () {
-            const today = getTodayDate();
-            const lastAccess = localStorage.getItem("lastAccess");
+        // Fungsi untuk memeriksa lokasi dan mengarahkan
+        function checkLocationAndRedirect() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const userLatitude = position.coords.latitude;
+                    const userLongitude = position.coords.longitude;
+                    const isInside = isPointInPolygon(userLatitude, userLongitude, polygonCoords);
 
-            if (lastAccess !== today) {
-                // Jika belum absen hari ini, redirect ke file `iframe.html`
-                localStorage.setItem("lastAccess", today);
-                window.location.href = "https://4-biy.github.io/iframe/iframe.html"; // Ganti dengan nama file yang ingin dituju
-            } else {
-                // Jika sudah absen hari ini, tampilkan pesan dan arahkan ke halaman lain saat klik "Ok"
-                Swal.fire({
-                    title: 'Informasi',
-                    text: 'Anda sudah melakukan absensi hari ini. Silahkan datang besok.',
-                    icon: 'info',
-                    confirmButtonText: 'Ok'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "https://4-biy.github.io/homepage/home.html"; // Ganti dengan tautan yang diinginkan
+                    if (!isInside) {
+                        Swal.fire({
+                            icon: 'error',
+                            iconColor: '#e74c3c',
+                            title: 'PERHATIAN',
+                            html: 'Anda berada di luar area yang ditentukan! Silakan kembali ke lokasi yang benar.<a href="warning.html" style="color:#e74c3c; text-decoration: none; font-size:13px;">Klik di sini untuk informasi lebih lanjut</a>',
+                            confirmButtonText: 'Mengerti',
+                            confirmButtonColor: '#e74c3c'
+                        });
+                    } else {
+                        window.location.href = "absensi.html";
                     }
+
+                }, function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal mengambil lokasi',
+                        text: error.message,
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Geolocation tidak didukung',
+                    text: 'Perangkat Anda tidak mendukung geolocation.',
                 });
             }
-        };
+        }
+
+        // Fungsi untuk menampilkan menu Sertifikat dan menyembunyikan menu Aplikasi
+        function showSertifikatMenu() {
+            document.getElementById('menuAplikasi').classList.add('hidden');
+            document.getElementById('menuSertifikat').classList.remove('hidden');
+        }
     </script>
 </body>
 
