@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>ABSENSI MAHASISWA & SISWA</title>
+    <style>
+        #gform {
+            margin: auto;
+            border: blue solid 1px;
+            width: 100%;
+            height: 98vh;
+            overflow: auto;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body style="background-color: #eee">
+    <!-- Container untuk membuat iframe responsif -->
+    <iframe id="gform" style="width: 100%; border: none;"></iframe>
+    <script>
+        // Cek apakah locationVerified true
+        if (sessionStorage.getItem("locationVerified") !== "true") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Akses Ditolak',
+                text: 'Anda harus berada dalam area yang ditentukan untuk mengakses halaman ini.',
+                confirmButtonText: 'Kembali'
+            }).then(() => {
+                window.location.href = "https://4-biy.github.io/absensi-siswa-mahasiswa/";
+            });
+        } else {
+            // Mengatur src iframe setelah halaman dimuat
+            var iframe = document.getElementById('gform');
+            iframe.src = "https://docs.google.com/forms/d/e/1FAIpQLScPH-WFk3jIJnlWbJR6KTUebMeHyAfxcDRlp2Oqb6z2S0CC1A/viewform?embedded=true";
+
+            // Deteksi jika iframe gagal dimuat
+            iframe.onload = function () {
+                console.log('Iframe berhasil dimuat');
+            };
+
+            // Fungsi untuk menangani error jika iframe gagal dimuat
+            function handleError() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Not Found',
+                    text: 'Halaman tidak dapat dimuat. Coba lagi nanti.',
+                    confirmButtonText: 'Tutup'
+                });
+            }
+        }
+    </script>
+</body>
+
+
+</html>
